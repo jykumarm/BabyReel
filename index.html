@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BabyReel — First Year Slideshow</title>
+<meta name="description" content="BabyReel — Turn your baby's first year photos into a beautiful slideshow. Photos stay on your device.">
+<meta name="theme-color" content="#0d0a1a">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --rose:    #FF6B8A;
+  --peach:   #FFB347;
+  --lemon:   #FFE566;
+  --mint:    #7EEACA;
+  --lavender:#C4B5FD;
+  --bg:      #0d0a1a;
+  --surface: #17132a;
+  --border:  rgba(255,255,255,0.08);
+  --text:    #f0eaff;
+  --muted:   rgba(240,234,255,0.45);
+  --font-brand: "Pacifico", cursive;
+  --font-body:  "DM Sans", sans-serif;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { width:100vw; height:100vh; overflow:hidden; background:var(--bg); font-family:var(--font-body); color:var(--text); }
+
+/* ── GRAIN OVERLAY ── */
+body::before {
+  content:''; position:fixed; inset:0; z-index:999; pointer-events:none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity: 0.4;
+}
+
+/* ── ANIMATED BG BLOBS ── */
+.bg-blobs { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
+.blob {
+  position:absolute; border-radius:50%; filter:blur(80px); opacity:0.18;
+  animation: blobDrift 14s ease-in-out infinite alternate;
+}
+.blob-1 { width:500px;height:500px; background:var(--rose);   top:-100px; left:-100px; animation-delay:0s; }
+.blob-2 { width:400px;height:400px; background:var(--lavender);bottom:-80px;right:-80px; animation-delay:-5s; }
+.blob-3 { width:300px;height:300px; background:var(--mint);   top:40%;   left:60%;    animation-delay:-9s; }
+@keyframes blobDrift {
+  0%   { transform: translate(0,0) scale(1); }
+  100% { transform: translate(40px, 30px) scale(1.1); }
+}
+
+/* ── LANDING SCREEN ── */
+#landing {
+  position:fixed; inset:0; z-index:100;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:0; padding:32px;
+}
+#landing.hidden { display:none; }
+
+.brand-lockup {
+  display:flex; flex-direction:column; align-items:center; gap:10px;
+  margin-bottom:48px; animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both;
+}
+.brand-icon {
+  width:72px; height:72px; border-radius:22px;
+  background: linear-gradient(135deg, var(--rose), var(--peach));
+  display:flex; align-items:center; justify-content:center;
+  font-size:2rem;
+  box-shadow: 0 8px 32px rgba(255,107,138,0.4), 0 0 0 1px rgba(255,255,255,0.1);
+  animation: iconPop 0.9s 0.1s cubic-bezier(0.34,1.56,0.64,1) both;
+}
+@keyframes iconPop { 0%{transform:scale(0.5);opacity:0} 100%{transform:scale(1);opacity:1} }
+.brand-name {
+  font-family: var(--font-brand);
+  font-size: 3rem; letter-spacing: 0.01em;
+  background: linear-gradient(135deg, var(--rose) 0%, var(--peach) 50%, var(--lemon) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  filter: drop-shadow(0 2px 12px rgba(255,107,138,0.4));
+}
+.brand-tagline {
+  font-size:0.95rem; color:var(--muted); font-weight:400; letter-spacing:0.04em;
+  margin-top:-4px;
+}
+
+/* Drop zone */
+.dropzone-card {
+  width:100%; max-width:460px;
+  background: var(--surface);
+  border: 1.5px dashed rgba(255,107,138,0.35);
+  border-radius:24px; padding:44px 40px; text-align:center;
+  cursor:pointer; transition:all 0.3s ease;
+  box-shadow: 0 0 0 0 rgba(255,107,138,0);
+  animation: fadeUp 0.8s 0.15s cubic-bezier(0.16,1,0.3,1) both;
+  position:relative; overflow:hidden;
+}
+.dropzone-card::before {
+  content:''; position:absolute; inset:0; border-radius:24px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,107,138,0.06) 0%, transparent 70%);
+  pointer-events:none;
+}
+.dropzone-card:hover, .dropzone-card.dragover {
+  border-color: var(--rose);
+  box-shadow: 0 0 0 4px rgba(255,107,138,0.12), 0 20px 60px rgba(255,107,138,0.1);
+  transform: translateY(-2px);
+}
+.dz-icon { font-size:3rem; margin-bottom:16px; display:block; }
+.dz-heading {
+  font-size:1.25rem; font-weight:700; color:var(--text);
+  margin-bottom:8px;
+}
+.dz-sub { font-size:0.875rem; color:var(--muted); line-height:1.6; margin-bottom:24px; }
+.dz-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  background: linear-gradient(135deg, var(--rose), var(--peach));
+  color:#fff; font-family:var(--font-body); font-size:0.95rem; font-weight:700;
+  padding:13px 28px; border:none; border-radius:50px; cursor:pointer;
+  transition:transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 20px rgba(255,107,138,0.35);
+  letter-spacing:0.02em;
+}
+.dz-btn:hover { transform:scale(1.04); box-shadow:0 6px 28px rgba(255,107,138,0.5); }
+
+/* Month pills */
+.month-strip {
+  display:flex; flex-wrap:wrap; gap:6px; justify-content:center;
+  max-width:480px; margin-top:20px;
+  animation: fadeUp 0.8s 0.25s cubic-bezier(0.16,1,0.3,1) both;
+}
+.mpill {
+  background:rgba(255,255,255,0.05); border:1px solid var(--border);
+  border-radius:20px; padding:4px 12px; font-size:0.72rem;
+  color:var(--muted); letter-spacing:0.03em;
+  transition: all 0.2s;
+}
+.mpill:hover { background:rgba(255,107,138,0.1); border-color:rgba(255,107,138,0.3); color:var(--rose); }
+
+.privacy-note {
+  margin-top:16px; font-size:0.75rem; color:rgba(255,255,255,0.2);
+  display:flex; align-items:center; gap:5px;
+  animation: fadeUp 0.8s 0.3s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes fadeUp { 0%{transform:translateY(20px);opacity:0} 100%{transform:translateY(0);opacity:1} }
+
+/* ── LOADING SCREEN ── */
+#loadingScreen {
+  display:none; position:fixed; inset:0; z-index:99;
+  flex-direction:column; align-items:center; justify-content:center; gap:20px;
+}
+#loadingScreen.show { display:flex; }
+.loading-brand {
+  font-family:var(--font-brand); font-size:2rem;
+  background:linear-gradient(135deg, var(--rose), var(--peach));
+  -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+}
+.loading-msg { font-size:0.9rem; color:var(--muted); min-height:1.4em; }
+.progress-wrap { width:240px; height:4px; background:rgba(255,255,255,0.08); border-radius:2px; overflow:hidden; }
+.progress-fill { height:100%; background:linear-gradient(90deg,var(--rose),var(--peach)); width:0%; transition:width 0.3s; border-radius:2px; }
+.loading-dots { display:flex; gap:8px; }
+.ldot { width:8px;height:8px;border-radius:50%; background:rgba(255,255,255,0.15); animation:ldotPulse 1.2s ease-in-out infinite; }
+.ldot:nth-child(2){animation-delay:.2s} .ldot:nth-child(3){animation-delay:.4s}
+@keyframes ldotPulse{0%,80%,100%{transform:scale(0.8);background:rgba(255,255,255,0.15)}40%{transform:scale(1.2);background:var(--rose)}}
+
+/* ── CONFETTI ── */
+.confetti-wrap { position:fixed; inset:0; pointer-events:none; z-index:10; overflow:hidden; }
+.cf { position:absolute; top:-20px; border-radius:2px; animation:cfFall linear infinite; }
+@keyframes cfFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(720deg);opacity:0.2}}
+
+/* ── SLIDESHOW ── */
+#show { position:fixed; inset:0; z-index:5; }
+.slide { position:absolute; inset:0; opacity:0; transition:opacity 1.2s ease-in-out; display:flex; align-items:center; justify-content:center; background:#0a0510; }
+.slide.active { opacity:1; z-index:2; }
+.slide.prev   { opacity:0; z-index:1; }
+.photo-frame  { position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.photo-bg     { position:absolute; inset:-50px; background-size:cover; background-position:center; filter:blur(35px) brightness(0.3) saturate(1.4); transform:scale(1.15); z-index:0; }
+.photo-main   { position:relative; z-index:1; max-width:100%; max-height:100%; object-fit:contain; animation:photoIn 1.5s cubic-bezier(0.16,1,0.3,1) forwards; }
+@keyframes photoIn { 0%{transform:scale(1.07);filter:brightness(0.5)} 100%{transform:scale(1);filter:brightness(1)} }
+
+/* Caption */
+.caption-wrap {
+  position:absolute; bottom:0; left:0; right:0; z-index:5;
+  padding:80px 52px 44px;
+  background:linear-gradient(to top, rgba(13,10,26,0.92) 0%, rgba(13,10,26,0.5) 50%, transparent 100%);
+  animation:capUp 1.2s 0.5s cubic-bezier(0.16,1,0.3,1) both;
+}
+@keyframes capUp{0%{transform:translateY(24px);opacity:0}100%{transform:translateY(0);opacity:1}}
+.cap-pill {
+  display:inline-flex; align-items:center; gap:6px;
+  background:rgba(255,107,138,0.18); border:1px solid rgba(255,107,138,0.35);
+  border-radius:20px; padding:4px 12px; margin-bottom:10px;
+  font-size:0.72rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase;
+  color:var(--rose);
+}
+.cap-title {
+  font-family:var(--font-brand); font-size:clamp(2rem,4.5vw,4rem);
+  color:#fff; line-height:1.15;
+  text-shadow:0 2px 24px rgba(13,10,26,0.8);
+}
+.cap-sub {
+  font-size:clamp(0.9rem,1.8vw,1.3rem); font-weight:400;
+  color:rgba(255,255,255,0.7); margin-top:8px;
+  text-shadow:0 1px 10px rgba(0,0,0,0.7); line-height:1.5; max-width:65vw;
+}
+
+/* Birthday banner */
+.bday-banner {
+  display:none; position:absolute; top:0;left:0;right:0; z-index:6;
+  padding:30px; text-align:center;
+  background:linear-gradient(to bottom, rgba(13,10,26,0.8), transparent);
+}
+.bday-text {
+  font-family:var(--font-brand); font-size:clamp(2rem,5vw,4rem);
+  background:linear-gradient(135deg,var(--lemon),var(--rose),var(--peach),var(--lemon));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:200%; animation:shimmer 2.5s linear infinite;
+  filter:drop-shadow(0 2px 12px rgba(255,180,50,0.4));
+}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
+
+/* Controls */
+.nav-btn {
+  position:fixed; top:50%; transform:translateY(-50%); z-index:20;
+  width:48px; height:48px; border-radius:50%; border:1px solid rgba(255,255,255,0.15);
+  background:rgba(13,10,26,0.6); color:rgba(255,255,255,0.8); font-size:1.4rem;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; backdrop-filter:blur(12px);
+  transition:all 0.25s; opacity:0.5;
+}
+.nav-btn:hover { opacity:1; border-color:rgba(255,107,138,0.5); background:rgba(255,107,138,0.15); }
+.nav-btn.left  { left:18px; }
+.nav-btn.right { right:18px; }
+
+.prog-bar { position:fixed; top:0;left:0; height:2px; background:linear-gradient(90deg,var(--rose),var(--peach)); z-index:30; transition:width 0.1s; box-shadow:0 0 8px rgba(255,107,138,0.7); }
+
+.dots-row { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); z-index:20; display:flex; gap:8px; align-items:center; }
+.dot { width:7px;height:7px;border-radius:50%; background:rgba(255,255,255,0.25); transition:all 0.4s; cursor:pointer; }
+.dot.active { background:var(--rose); transform:scale(1.6); }
+
+.counter { position:fixed; top:22px; right:26px; z-index:20; font-size:0.8rem; color:rgba(255,255,255,0.35); font-weight:500; letter-spacing:0.1em; }
+
+/* BabyReel watermark on slideshow */
+.brand-watermark {
+  position:fixed; top:20px; left:22px; z-index:20;
+  display:flex; align-items:center; gap:8px;
+  opacity:0.6; transition:opacity 0.2s;
+}
+.brand-watermark:hover { opacity:1; }
+.wm-icon { width:28px;height:28px;border-radius:8px; background:linear-gradient(135deg,var(--rose),var(--peach)); display:flex;align-items:center;justify-content:center; font-size:0.85rem; }
+.wm-name { font-family:var(--font-brand); font-size:1rem; background:linear-gradient(135deg,var(--rose),var(--peach)); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+
+.pause-btn { position:fixed; bottom:48px; right:22px; z-index:20; background:rgba(13,10,26,0.6); border:1px solid rgba(255,255,255,0.1); color:rgba(255,255,255,0.4); font-size:0.75rem; padding:6px 14px; border-radius:20px; cursor:pointer; backdrop-filter:blur(8px); transition:all 0.2s; }
+.pause-btn:hover { color:rgba(255,255,255,0.8); border-color:rgba(255,107,138,0.4); }
+
+/* install banner */
+#installBanner {
+  display:none; position:fixed; bottom:56px; left:50%; transform:translateX(-50%);
+  z-index:50; background:var(--surface); border:1px solid rgba(255,107,138,0.25);
+  border-radius:14px; padding:10px 18px; font-size:0.82rem; color:var(--muted);
+  gap:12px; align-items:center; backdrop-filter:blur(12px); white-space:nowrap;
+  box-shadow:0 8px 32px rgba(0,0,0,0.4);
+}
+#installBanner.show { display:flex; }
+#installBanner button { background:linear-gradient(135deg,var(--rose),var(--peach)); color:#fff; border:none; border-radius:8px; padding:5px 14px; font-weight:700; cursor:pointer; font-size:0.78rem; }
+</style>
+</head>
+<body>
+
+<div class="bg-blobs">
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+</div>
+
+<!-- LANDING -->
+<div id="landing">
+  <div class="brand-lockup">
+    <div class="brand-icon">🎞️</div>
+    <div class="brand-name">BabyReel</div>
+    <div class="brand-tagline">Your baby's first year, beautifully told</div>
+  </div>
+
+  <div class="dropzone-card" id="dropBox">
+    <span class="dz-icon">📁</span>
+    <div class="dz-heading">Drop your monthly photos</div>
+    <div class="dz-sub">One photo per month, in order — captions appear automatically.<br>Up to 13 photos · Newborn through 12 months.</div>
+    <input type="file" id="fileInput" multiple accept="image/*" style="display:none">
+    <button class="dz-btn" onclick="document.getElementById('fileInput').click()">
+      📷 Choose Photos
+    </button>
+  </div>
+
+  <div class="month-strip">
+    <span class="mpill">Newborn</span><span class="mpill">1 Month</span>
+    <span class="mpill">2 Months</span><span class="mpill">3 Months</span>
+    <span class="mpill">4 Months</span><span class="mpill">5 Months</span>
+    <span class="mpill">6 Months</span><span class="mpill">7 Months</span>
+    <span class="mpill">8 Months</span><span class="mpill">9 Months</span>
+    <span class="mpill">10 Months</span><span class="mpill">11 Months</span>
+    <span class="mpill">12 Months 🎂</span>
+  </div>
+
+  <div class="privacy-note">🔒 Photos never leave your device — everything runs in your browser</div>
+</div>
+
+<!-- LOADING -->
+<div id="loadingScreen">
+  <div class="loading-brand">BabyReel</div>
+  <div class="loading-dots"><div class="ldot"></div><div class="ldot"></div><div class="ldot"></div></div>
+  <div class="loading-msg" id="loadingMsg">Loading your memories...</div>
+  <div class="progress-wrap"><div class="progress-fill" id="progFill"></div></div>
+</div>
+
+<!-- CONFETTI -->
+<div class="confetti-wrap" id="confetti"></div>
+
+<!-- SLIDESHOW -->
+<div class="prog-bar" id="progBar" style="display:none"></div>
+<div id="show" style="display:none"></div>
+<div class="brand-watermark" id="wmk" style="display:none">
+  <div class="wm-icon">🎞️</div>
+  <div class="wm-name">BabyReel</div>
+</div>
+<button class="nav-btn left"  id="btnPrev" onclick="prevSlide()" style="display:none">&#8249;</button>
+<button class="nav-btn right" id="btnNext" onclick="nextSlide()" style="display:none">&#8250;</button>
+<div class="counter"   id="counter"  style="display:none"></div>
+<div class="dots-row"  id="dots"     style="display:none"></div>
+<button class="pause-btn" id="pauseBtn" onclick="togglePause()" style="display:none">⏸ Pause</button>
+<div id="installBanner">📲 Install BabyReel <button onclick="installApp()">Install</button> <span onclick="this.parentElement.classList.remove('show')" style="cursor:pointer;margin-left:4px;opacity:0.4">✕</span></div>
+
+<script>
+const CAPTIONS = [
+  { month:"Newborn",   title:"Hello, World!",       sub:"The most beautiful surprise we ever received" },
+  { month:"1 Month",   title:"One Month Old",        sub:"Already changing our whole world" },
+  { month:"2 Months",  title:"Growing So Fast",      sub:"Every day brings something new to love" },
+  { month:"3 Months",  title:"First Real Smiles",    sub:"That grin could light up any room" },
+  { month:"4 Months",  title:"Eyes Wide Open",       sub:"Curious about everything and everyone" },
+  { month:"5 Months",  title:"Little Explorer",      sub:"Reaching, grabbing, discovering the world" },
+  { month:"6 Months",  title:"Halfway There 🎉",     sub:"Six whole months of pure joy and wonder" },
+  { month:"7 Months",  title:"On the Move",          sub:"Nothing can slow this little one down" },
+  { month:"8 Months",  title:"Full of Mischief",     sub:"The laughs are getting louder every day" },
+  { month:"9 Months",  title:"Almost Walking!",      sub:"Wobbly legs and the biggest determination" },
+  { month:"10 Months", title:"So Much Personality",  sub:"Making everyone fall in love, one smile at a time" },
+  { month:"11 Months", title:"Nearly One Year",      sub:"How did a whole year go by so fast?" },
+  { month:"12 Months", title:"Happy 1st Birthday!",  sub:"One year down, a lifetime of adventures ahead" },
+];
+
+const DURATION = 6000;
+let photos=[], current=0, timer=null, paused=false, elapsed=0, startTime=null, deferredInstall=null;
+
+// PWA
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferredInstall=e; document.getElementById('installBanner').classList.add('show'); });
+function installApp() { if(!deferredInstall)return; deferredInstall.prompt(); deferredInstall.userChoice.then(()=>{ document.getElementById('installBanner').classList.remove('show'); deferredInstall=null; }); }
+
+// Service Worker
+if('serviceWorker' in navigator){
+  const sw=`const C='babyreel-v1';self.addEventListener('install',e=>e.waitUntil(caches.open(C).then(c=>c.add('/'))));self.addEventListener('fetch',e=>e.respondWith(caches.match(e.request).then(r=>r||fetch(e.request))));`;
+  navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'}))).catch(()=>{});
+}
+
+// Manifest
+const mf={name:"BabyReel",short_name:"BabyReel",start_url:".",display:"fullscreen",background_color:"#0d0a1a",theme_color:"#FF6B8A",icons:[{src:"data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎞️</text></svg>",sizes:"any",type:"image/svg+xml"}]};
+const ml=document.createElement('link'); ml.rel='manifest'; ml.href=URL.createObjectURL(new Blob([JSON.stringify(mf)],{type:'application/json'})); document.head.appendChild(ml);
+
+// Drag & drop
+const dropBox=document.getElementById('dropBox');
+dropBox.addEventListener('dragover',e=>{e.preventDefault();dropBox.classList.add('dragover');});
+dropBox.addEventListener('dragleave',()=>dropBox.classList.remove('dragover'));
+dropBox.addEventListener('drop',e=>{
+  e.preventDefault(); dropBox.classList.remove('dragover');
+  const files=[]; let dp=0;
+  const done=()=>{if(dp===0)loadPhotos(files);};
+  for(let item of e.dataTransfer.items){
+    const entry=item.webkitGetAsEntry?.();
+    if(entry?.isDirectory){dp++;readDir(entry,files,()=>{dp--;done();});}
+    else if(item.kind==='file'){const f=item.getAsFile();if(f&&isImg(f))files.push(f);}
+  }
+  if(dp===0)done();
+});
+function readDir(dir,files,done){
+  dir.createReader().readEntries(entries=>{
+    let p=entries.length||1; if(!entries.length)return done();
+    entries.forEach(e=>{
+      if(e.isFile)e.file(f=>{if(isImg(f))files.push(f);if(!--p)done();});
+      else if(e.isDirectory)readDir(e,files,()=>{if(!--p)done();});
+      else if(!--p)done();
+    });
+  });
+}
+function isImg(f){return f.type.startsWith('image/')||/\.(heic|heif|jpg|jpeg|png|webp)$/i.test(f.name);}
+document.getElementById('fileInput').addEventListener('change',e=>loadPhotos(Array.from(e.target.files).filter(isImg)));
+
+function loadPhotos(files){
+  if(!files.length)return alert('No images found!');
+  files.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
+  if(files.length>13)files=files.slice(0,13);
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('loadingScreen').classList.add('show');
+  const fill=document.getElementById('progFill'), msg=document.getElementById('loadingMsg');
+  photos=new Array(files.length); let loaded=0;
+  files.forEach((file,i)=>{
+    const r=new FileReader();
+    r.onload=e=>{
+      photos[i]=e.target.result; loaded++;
+      fill.style.width=(loaded/files.length*100)+'%';
+      msg.textContent=`Loading memory ${loaded} of ${files.length}...`;
+      if(loaded===files.length)setTimeout(buildShow,400);
+    };
+    r.readAsDataURL(file);
+  });
+}
+
+function buildShow(){
+  document.getElementById('loadingScreen').classList.remove('show');
+  const ss=document.getElementById('show'); ss.innerHTML='';
+  const offset=13-photos.length;
+  photos.forEach((src,i)=>{
+    const cap=CAPTIONS[offset+i]||CAPTIONS[12];
+    const isLast=i===photos.length-1;
+    const slide=document.createElement('div');
+    slide.className='slide'+(i===0?' active':''); slide.id='slide'+i;
+    slide.innerHTML=`
+      <div class="photo-frame">
+        <div class="photo-bg" style="background-image:url('${src}')"></div>
+        <img class="photo-main" src="${src}" alt=""/>
+        ${isLast?'<div class="bday-banner" id="bdayBanner"><div class="bday-text">🎂 Happy 1st Birthday! 🎈</div></div>':''}
+        <div class="caption-wrap">
+          <div class="cap-pill">✦ ${cap.month}</div>
+          <div class="cap-title">${cap.title}</div>
+          <div class="cap-sub">${cap.sub}</div>
+        </div>
+      </div>`;
+    ss.appendChild(slide);
+  });
+
+  // Dots
+  const dotsEl=document.getElementById('dots'); dotsEl.innerHTML='';
+  photos.forEach((_,i)=>{
+    const d=document.createElement('div'); d.className='dot'+(i===0?' active':'');
+    d.onclick=()=>{goTo(i);resetTimer();}; dotsEl.appendChild(d);
+  });
+
+  // Confetti
+  const colors=['#FF6B8A','#FFB347','#FFE566','#7EEACA','#C4B5FD','#FF9ECD','#B5EAEA'];
+  const ce=document.getElementById('confetti'); ce.innerHTML='';
+  for(let i=0;i<70;i++){
+    const c=document.createElement('div'); c.className='cf';
+    c.style.cssText=`left:${Math.random()*100}vw;background:${colors[i%colors.length]};width:${5+Math.random()*8}px;height:${5+Math.random()*8}px;animation-duration:${5+Math.random()*6}s;animation-delay:${Math.random()*8}s;border-radius:${Math.random()>.5?'50%':'2px'};opacity:0.7`;
+    ce.appendChild(c);
+  }
+
+  ['show','progBar','wmk','btnPrev','btnNext','counter','dots','pauseBtn'].forEach(id=>document.getElementById(id).style.display='');
+  current=0; updateUI(); startTimer();
+}
+
+function goTo(n){
+  const old=document.getElementById('slide'+current);
+  old.classList.remove('active'); old.classList.add('prev');
+  setTimeout(()=>old.classList.remove('prev'),1400);
+  current=((n%photos.length)+photos.length)%photos.length;
+  document.getElementById('slide'+current).classList.add('active');
+  elapsed=0; startTime=Date.now(); updateUI();
+}
+function updateUI(){
+  document.querySelectorAll('.dot').forEach((d,i)=>d.classList.toggle('active',i===current));
+  document.getElementById('counter').textContent=(current+1)+' / '+photos.length;
+  const b=document.getElementById('bdayBanner');
+  if(b)b.style.display=current===photos.length-1?'block':'none';
+  updateProg();
+}
+function nextSlide(){goTo(current+1);resetTimer();}
+function prevSlide(){goTo(current-1);resetTimer();}
+function resetTimer(){clearInterval(timer);if(!paused)startTimer();}
+function startTimer(){
+  startTime=Date.now()-elapsed;
+  timer=setInterval(()=>{elapsed=Date.now()-startTime;updateProg();if(elapsed>=DURATION){elapsed=0;goTo(current+1);startTime=Date.now();}},50);
+}
+function updateProg(){document.getElementById('progBar').style.width=Math.min(elapsed/DURATION*100,100)+'%';}
+function togglePause(){
+  paused=!paused;
+  document.getElementById('pauseBtn').textContent=paused?'▶ Play':'⏸ Pause';
+  paused?clearInterval(timer):startTimer();
+}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key===' ')nextSlide();
+  else if(e.key==='ArrowLeft')prevSlide();
+  else if(e.key.toLowerCase()==='p')togglePause();
+});
+let tx=null;
+document.addEventListener('touchstart',e=>tx=e.touches[0].clientX);
+document.addEventListener('touchend',e=>{
+  if(!tx)return;
+  if(Math.abs(e.changedTouches[0].clientX-tx)>50)e.changedTouches[0].clientX<tx?nextSlide():prevSlide();
+  tx=null;
+});
+</script>
+</body>
+</html>
