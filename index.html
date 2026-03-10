@@ -94,16 +94,21 @@ body::before {
 .dz-icon { font-size:2.8rem; margin-bottom:12px; display:block; }
 .dz-heading { font-size:clamp(1rem,4vw,1.2rem); font-weight:700; margin-bottom:8px; }
 .dz-sub { font-size:clamp(0.78rem,3vw,0.875rem); color:var(--muted); line-height:1.6; margin-bottom:22px; }
+.upload-btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
 .dz-btn {
   display:inline-flex; align-items:center; gap:8px;
   background:linear-gradient(135deg,var(--rose),var(--peach)); color:#fff;
   font-family:var(--font-body); font-size:clamp(0.88rem,3.5vw,0.95rem); font-weight:700;
-  padding:13px 28px; border:none; border-radius:50px; cursor:pointer;
+  padding:13px 24px; border:none; border-radius:50px; cursor:pointer;
   transition:transform 0.2s, box-shadow 0.2s;
   box-shadow:0 4px 20px rgba(255,107,138,0.35); letter-spacing:0.02em;
   -webkit-appearance:none;
 }
-.dz-btn:active { transform:scale(0.97); }
+.dz-btn-cam {
+  background:linear-gradient(135deg,#7EEACA,#45B7D1); color:#0d0a1a;
+  box-shadow:0 4px 20px rgba(126,234,202,0.3);
+}
+.dz-btn:active,.dz-btn-cam:active { transform:scale(0.97); }
 
 /* Mobile file input hint */
 .mobile-hint {
@@ -166,52 +171,109 @@ body::before {
 /* ── SLIDESHOW ── */
 #show { position:fixed; inset:0; z-index:5; }
 
-/* Slide transitions: Ken Burns zoom + directional slide */
 .slide {
   position:absolute; inset:0; opacity:0; display:flex;
   align-items:center; justify-content:center; background:#0a0510;
-  z-index:1;
+  z-index:1; pointer-events:none;
 }
-.slide.active { opacity:1; z-index:2; }
+.slide.active { opacity:1; z-index:2; pointer-events:auto; }
 
 /* Photo frame */
 .photo-frame { position:relative; width:100%; height:100%; display:flex; align-items:center; justify-content:center; overflow:hidden; }
 
-/* Blurred bg */
+/* Blurred bg — slow drift */
 .photo-bg {
   position:absolute; inset:-60px; background-size:cover; background-position:center;
-  filter:blur(40px) brightness(0.28) saturate(1.6); z-index:0;
-  transition:transform 8s ease-out;
+  filter:blur(40px) brightness(0.25) saturate(1.8); z-index:0;
+  transform:scale(1); transition:transform 9s ease-out;
 }
-.slide.active .photo-bg { transform:scale(1.08); }
+.slide.active .photo-bg { transform:scale(1.1); }
 
-/* Main photo — Ken Burns */
-.photo-main {
+/* ── VINTAGE PRINT WRAPPER ── */
+/* The photo sits inside a print border like a physical photo */
+.print-wrap {
   position:relative; z-index:1;
-  max-width:100%; max-height:100%; object-fit:contain;
-  will-change:transform, opacity;
-  opacity:0; transform:scale(1.08);
-  transition: opacity 0s, transform 0s;
+  display:flex; align-items:center; justify-content:center;
+  /* Vintage warm white border — like a printed photo */
+  background:#f5ede0;
+  padding: clamp(10px,2.5vw,22px) clamp(10px,2.5vw,22px) clamp(28px,6vw,52px);
+  box-shadow:
+    0 0 0 1px rgba(180,150,110,0.3),
+    0 8px 32px rgba(0,0,0,0.55),
+    0 32px 80px rgba(0,0,0,0.4),
+    inset 0 0 30px rgba(200,160,100,0.08);
+  /* Start state for animation */
+  opacity:0;
+  transform: rotate(0deg) scale(0.88) translateY(40px);
+  filter: brightness(0.7) sepia(0.1);
+  will-change: transform, opacity, filter;
 }
 
-/* Entry animations */
-.slide.active .photo-main {
-  animation: kenBurns 7s cubic-bezier(0.25,0.46,0.45,0.94) forwards;
-}
-@keyframes kenBurns {
-  0%   { opacity:0; transform:scale(1.08) translateY(8px); filter:brightness(0.6) blur(4px); }
-  12%  { opacity:1; filter:brightness(1) blur(0px); }
-  100% { opacity:1; transform:scale(1.0) translateY(0px); filter:brightness(1) blur(0px); }
+/* Vintage texture overlay on the print border */
+.print-wrap::before {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:10;
+  background:
+    repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(180,140,90,0.015) 2px, rgba(180,140,90,0.015) 4px),
+    repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(180,140,90,0.015) 2px, rgba(180,140,90,0.015) 4px);
+  mix-blend-mode:multiply;
 }
 
-/* Slide fade — cross-dissolve with scale */
-.slide { transition: opacity 1.0s cubic-bezier(0.4,0,0.2,1); }
+/* Slight vignette inside the print border */
+.print-wrap::after {
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:9;
+  background:radial-gradient(ellipse at center, transparent 60%, rgba(140,100,60,0.12) 100%);
+  mix-blend-mode:multiply;
+}
+
+/* The actual photo inside the print */
+.photo-main {
+  display:block;
+  max-width: min(calc(100vw - clamp(60px,14vw,160px)), calc(100vh - clamp(100px,18vh,200px)));
+  max-height: min(calc(100vh - clamp(100px,18vh,200px)), calc(100vw - clamp(60px,14vw,160px)));
+  width:auto; height:auto;
+  object-fit:contain;
+  display:block;
+  /* Subtle warm tone overlay — vintage look */
+  filter: sepia(0.12) contrast(1.04) saturate(0.92) brightness(0.98);
+}
+
+/* ── VINTAGE DROP-IN ANIMATION ── */
+/* Each slide uses a slightly different random tilt — set via JS */
+.slide.active .print-wrap {
+  animation: vintageDropIn 1.3s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+@keyframes vintageDropIn {
+  0%   { opacity:0;   transform:var(--tilt-start) scale(0.86) translateY(50px); filter:brightness(0.5) sepia(0.3) blur(3px); }
+  40%  { opacity:1;   filter:brightness(0.9) sepia(0.15) blur(0px); }
+  65%  { transform:var(--tilt-mid) scale(1.01) translateY(-4px); }
+  82%  { transform:var(--tilt-end) scale(0.995) translateY(2px); }
+  100% { transform:var(--tilt-end) scale(1) translateY(0px); filter:brightness(1) sepia(0.06) blur(0px); opacity:1; }
+}
+
+/* Gentle slow sway once settled — like a hanging print */
+.slide.active .print-wrap.settled {
+  animation: gentleSway 6s 1.3s ease-in-out infinite alternate;
+}
+@keyframes gentleSway {
+  0%   { transform:var(--tilt-end) scale(1) translateY(0); }
+  100% { transform:var(--tilt-sway) scale(1) translateY(-3px); }
+}
+
+/* Exiting slide */
 .slide.exiting {
-  opacity:0 !important;
-  z-index:3;
-  pointer-events:none;
-  transition: opacity 1.0s cubic-bezier(0.4,0,0.2,1);
+  opacity:0 !important; z-index:3; pointer-events:none;
+  transition:opacity 0.9s cubic-bezier(0.4,0,0.6,1);
 }
+.slide.exiting .print-wrap {
+  animation: vintageFlyOut 0.9s cubic-bezier(0.4,0,1,1) forwards !important;
+}
+@keyframes vintageFlyOut {
+  0%   { opacity:1; transform:var(--tilt-end) scale(1) translateY(0); filter:brightness(1) sepia(0.06); }
+  100% { opacity:0; transform:var(--tilt-out) scale(0.9) translateY(-30px); filter:brightness(1.1) sepia(0.2) blur(2px); }
+}
+
+/* Slide base fade */
+.slide { transition:opacity 0.9s cubic-bezier(0.4,0,0.2,1); }
 
 /* Caption */
 .caption-wrap {
@@ -326,9 +388,13 @@ body::before {
     <span class="dz-icon">📁</span>
     <div class="dz-heading">Drop your monthly photos</div>
     <div class="dz-sub">One photo per month in order — captions appear automatically.<br>Up to 13 photos · Newborn through 12 months.</div>
-    <input type="file" id="fileInput" multiple accept="image/*" style="display:none" capture="">
-    <button class="dz-btn" onclick="document.getElementById('fileInput').click()">📷 Choose Photos</button>
-    <div class="mobile-hint">📱 On mobile, tap to open your photo library</div>
+    <input type="file" id="fileInput" multiple accept="image/*" style="display:none">
+    <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none">
+    <div class="upload-btns">
+      <button class="dz-btn" onclick="document.getElementById('fileInput').click()">🖼️ Gallery</button>
+      <button class="dz-btn dz-btn-cam" onclick="document.getElementById('cameraInput').click()">📷 Camera</button>
+    </div>
+    <div class="mobile-hint">📱 Choose from gallery or take new photos</div>
   </div>
 
   <div class="month-strip">
@@ -425,8 +491,9 @@ function readDir(dir,files,done){
 }
 function isImg(f){return f.type.startsWith('image/')||/\.(heic|heif|jpg|jpeg|png|webp)$/i.test(f.name);}
 document.getElementById('fileInput').addEventListener('change',e=>loadPhotos(Array.from(e.target.files).filter(isImg)));
+document.getElementById('cameraInput').addEventListener('change',e=>loadPhotos(Array.from(e.target.files).filter(isImg)));
 
-// Also allow tapping the whole card on mobile
+// Tapping card itself opens gallery (not camera)
 dropBox.addEventListener('click', e => { if(e.target.tagName!=='BUTTON') document.getElementById('fileInput').click(); });
 
 function loadPhotos(files){
@@ -457,12 +524,22 @@ function buildShow(){
   photos.forEach((src,i)=>{
     const cap=CAPTIONS[offset+i]||CAPTIONS[12];
     const isLast=i===photos.length-1;
+    // Random tilt values for vintage feel — each photo slightly different
+    const tilts = [
+      {start:'rotate(-3deg)',mid:'rotate(1.5deg)',end:'rotate(-1.2deg)',sway:'rotate(-0.4deg)',out:'rotate(-4deg)'},
+      {start:'rotate(3deg)', mid:'rotate(-1deg)',end:'rotate(1.1deg)', sway:'rotate(0.3deg)', out:'rotate(3.5deg)'},
+      {start:'rotate(-2deg)',mid:'rotate(0.8deg)',end:'rotate(-0.6deg)',sway:'rotate(0.5deg)', out:'rotate(-3deg)'},
+      {start:'rotate(2.5deg)',mid:'rotate(-1.2deg)',end:'rotate(0.8deg)',sway:'rotate(-0.6deg)',out:'rotate(2deg)'},
+    ];
+    const t = tilts[i % tilts.length];
     const slide=document.createElement('div');
     slide.className='slide'+(i===0?' active':''); slide.id='slide'+i;
     slide.innerHTML=`
       <div class="photo-frame">
         <div class="photo-bg" style="background-image:url('${src}')"></div>
-        <img class="photo-main" src="${src}" alt=""/>
+        <div class="print-wrap" id="print${i}" style="--tilt-start:${t.start};--tilt-mid:${t.mid};--tilt-end:${t.end};--tilt-sway:${t.sway};--tilt-out:${t.out}">
+          <img class="photo-main" src="${src}" alt=""/>
+        </div>
         ${isLast?'<div class="bday-banner" id="bdayBanner"><div class="bday-text">🎂 Happy 1st Birthday! 🎈</div></div>':''}
         <div class="caption-wrap">
           <div class="cap-pill">✦ ${cap.month}</div>
@@ -471,6 +548,10 @@ function buildShow(){
         </div>
       </div>`;
     ss.appendChild(slide);
+    // Add settled sway after drop-in completes
+    if(i===0){
+      setTimeout(()=>{ const pw=document.getElementById('print0'); if(pw)pw.classList.add('settled'); }, 1400);
+    }
   });
 
   // Dots
@@ -497,7 +578,7 @@ function buildShow(){
   current=0; updateUI(); startTimer();
 }
 
-// ── TRANSITION: cross-dissolve with Ken Burns ──
+// ── TRANSITION: vintage print drop-in ──
 function goTo(n){
   if(transitioning) return;
   const next = ((n%photos.length)+photos.length)%photos.length;
@@ -506,27 +587,32 @@ function goTo(n){
 
   const outSlide=document.getElementById('slide'+current);
   const inSlide =document.getElementById('slide'+next);
+  const inPrint = document.getElementById('print'+next);
 
-  // Outgoing: add exiting class (fades out)
+  // Outgoing
   outSlide.classList.add('exiting');
   outSlide.classList.remove('active');
+  const outPrint=document.getElementById('print'+current);
+  if(outPrint) outPrint.classList.remove('settled');
 
-  // Incoming: make visible, trigger Ken Burns
+  // Reset incoming print animation
+  if(inPrint){
+    inPrint.classList.remove('settled');
+    inPrint.style.animation='none';
+    inPrint.offsetHeight; // reflow
+    inPrint.style.animation='';
+  }
+
   inSlide.classList.add('active');
-
-  // Re-trigger animation on photo-main by removing/adding active
-  const img = inSlide.querySelector('.photo-main');
-  img.style.animation='none';
-  img.offsetHeight; // reflow
-  img.style.animation='';
-
   current=next;
   updateUI();
 
+  // Add sway once drop-in done
   setTimeout(()=>{
+    if(inPrint) inPrint.classList.add('settled');
     outSlide.classList.remove('exiting');
     transitioning=false;
-  }, 1100);
+  }, 1400);
 
   elapsed=0; startTime=Date.now();
 }
