@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BabyReel – Datenschutz & Nutzungsbedingungen</title>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--rose:#FF6B8A;--peach:#FFB347;--lemon:#FFE566;--mint:#7EEACA;--lavender:#C4B5FD;--bg:#0d0a1a;--surface:#17132a;--border:rgba(255,255,255,0.08);--text:#f0eaff;--muted:rgba(240,234,255,0.55);}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:"DM Sans",sans-serif;min-height:100vh;padding:40px 20px;}
+.container{max-width:680px;margin:0 auto;}
+.back{display:inline-flex;align-items:center;gap:8px;color:var(--rose);text-decoration:none;font-size:0.88rem;font-weight:600;margin-bottom:32px;opacity:0.8;transition:opacity 0.2s;}
+.back:hover{opacity:1;}
+.brand{font-family:"Pacifico",cursive;font-size:2rem;background:linear-gradient(135deg,var(--rose),var(--peach),var(--lemon));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:6px;}
+.subtitle{color:var(--muted);font-size:0.88rem;margin-bottom:40px;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:28px;margin-bottom:20px;}
+.card-icon{font-size:2rem;margin-bottom:12px;}
+h2{font-size:1.1rem;font-weight:700;margin-bottom:14px;color:var(--text);}
+p{color:var(--muted);line-height:1.75;font-size:0.92rem;margin-bottom:10px;}
+p:last-child{margin-bottom:0;}
+ul{color:var(--muted);line-height:1.75;font-size:0.92rem;padding-left:20px;}
+ul li{margin-bottom:6px;}
+.highlight{background:rgba(126,234,202,0.1);border:1px solid rgba(126,234,202,0.25);border-radius:12px;padding:16px 18px;margin-top:14px;}
+.highlight p{color:var(--mint);font-weight:600;margin:0;}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(126,234,202,0.12);border:1px solid rgba(126,234,202,0.3);border-radius:20px;padding:4px 12px;font-size:0.78rem;font-weight:700;color:var(--mint);margin-bottom:20px;}
+footer{text-align:center;color:rgba(255,255,255,0.18);font-size:0.75rem;margin-top:40px;line-height:1.8;}
+</style>
+</head>
+<body>
+<div class="container">
+  <a class="back" href="index.html">← Zurück zu BabyReel</a>
+  <div class="brand">BabyReel</div>
+  <div class="subtitle">Datenschutz &amp; Nutzungsbedingungen · Stand: März 2026</div>
+
+  <div class="badge">🔒 100% lokal · Keine Server · Keine Konten</div>
+
+  <div class="card">
+    <div class="card-icon">📸</div>
+    <h2>Welche Daten werden verarbeitet?</h2>
+    <p>BabyReel verarbeitet ausschließlich die Fotos, die du selbst auswählst. Diese Bilder werden direkt im Arbeitsspeicher deines Geräts geladen und <strong>niemals auf externe Server übertragen</strong>.</p>
+    <ul>
+      <li>Fotos werden als Base64-Datenstrom im Browser-Speicher gehalten</li>
+      <li>Musik-Dateien (falls hochgeladen) werden ebenfalls nur lokal abgespielt</li>
+      <li>Es werden keinerlei personenbezogene Daten erfasst</li>
+      <li>Es gibt keine Registrierung, kein Login, kein Tracking</li>
+    </ul>
+    <div class="highlight"><p>✅ Deine Fotos verlassen niemals dein Gerät.</p></div>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🗄️</div>
+    <h2>Wo werden Daten gespeichert?</h2>
+    <p>BabyReel speichert <strong>keine Daten dauerhaft</strong>. Wenn du den Browser-Tab schließt oder die Seite neu lädst, sind alle Fotos aus dem Speicher gelöscht.</p>
+    <ul>
+      <li>Kein LocalStorage mit Bilddaten</li>
+      <li>Kein IndexedDB-Zugriff</li>
+      <li>Kein Cloud-Upload, kein CDN, kein Drittanbieter</li>
+      <li>Der Service Worker speichert nur die App-Shell (HTML/CSS/JS) für Offline-Nutzung – niemals Fotos</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🌐</div>
+    <h2>Netzwerkverbindungen</h2>
+    <p>BabyReel lädt beim ersten Aufruf Schriften von Google Fonts (fonts.googleapis.com). Das ist die einzige externe Verbindung. Danach funktioniert die App vollständig offline.</p>
+    <ul>
+      <li><strong>Google Fonts</strong> – nur für Schriftarten (Pacifico, DM Sans)</li>
+      <li>Keine Analyse-Tools (kein Google Analytics, kein Matomo)</li>
+      <li>Keine Werbung, keine Drittanbieter-Skripte</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">⚖️</div>
+    <h2>Nutzungsbedingungen</h2>
+    <p>BabyReel ist ein privates Hobby-Projekt, das kostenlos zur Verfügung gestellt wird. Es besteht kein Anspruch auf Verfügbarkeit oder Fehlerfreiheit.</p>
+    <ul>
+      <li>Die App darf frei für private Zwecke genutzt werden</li>
+      <li>Eine kommerzielle Nutzung ist nicht gestattet</li>
+      <li>Der Autor übernimmt keine Haftung für Datenverluste</li>
+      <li>Erstellt mit ♥ von Jayakumar &amp; AI, zu Hause</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <div class="card-icon">🎥</div>
+    <h2>Video-Export (GIF / MP4)</h2>
+    <p>Die Export-Funktion nutzt die <code>MediaRecorder</code>-API des Browsers. Die Aufnahme erfolgt ausschließlich lokal – das fertige Video wird direkt auf dein Gerät heruntergeladen und nirgendwo hochgeladen.</p>
+  </div>
+
+  <footer>
+    BabyReel · Kein Impressum erforderlich (privates Projekt) · Erstellt mit ♥ von Jayakumar &amp; AI<br>
+    Bei Fragen: Dies ist ein lokales Werkzeug ohne Support-Kanal.
+  </footer>
+</div>
+</body>
+</html>
