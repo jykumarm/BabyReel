@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="BabyReel">
-<title>BabyReel — First Year Slideshow</title>
+<title>BabyReel — Erstes Jahr Diashow</title>
 <meta name="theme-color" content="#0d0a1a">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -189,29 +189,29 @@ body.single-mode .slide.active .photo-main{
 }
 
 /* ── BABY ELEPHANT ── */
+/* ── BABY ON TRICYCLE ── */
 .elephant-wrap{
   position:absolute;bottom:18px;z-index:15;pointer-events:none;
-  width:auto;height:70px;
-  display:flex;align-items:flex-end;gap:10px;
+  width:auto;height:80px;
+  display:flex;align-items:flex-end;gap:12px;
   animation:elephantWalk 18s linear infinite;
   opacity:0;
-  transform:scaleX(-1); /* face right */
 }
 @keyframes elephantWalk{
-  0%              {transform:scaleX(-1) translateX(calc(100vw + 200px));opacity:0;}
+  0%              {transform:scaleX(-1) translateX(calc(100vw + 220px));opacity:0;}
   5%              {opacity:1;}
   88%             {opacity:1;}
-  100%            {transform:scaleX(-1) translateX(-200px);opacity:0;}
+  100%            {transform:scaleX(-1) translateX(-220px);opacity:0;}
 }
 .elephant-msg{
-  transform:scaleX(-1); /* un-flip the text */
   font-family:var(--font-brand);
   font-size:clamp(0.9rem,2.5vw,1.3rem);
   color:rgba(255,255,255,0.85);
   white-space:nowrap;
-  margin-bottom:18px;
+  margin-bottom:22px;
   text-shadow:0 2px 12px rgba(0,0,0,0.6);
   animation:msgFade 18s linear infinite;
+  transform:scaleX(-1);
 }
 @keyframes msgFade{
   0%,8%  {opacity:0;}
@@ -220,8 +220,8 @@ body.single-mode .slide.active .photo-main{
   95%    {opacity:0;}
   100%   {opacity:0;}
 }
-/* legs bob up and down as it walks */
-.elephant-wrap svg{
+/* gentle body bob as elephant walks */
+.trike-wrap{
   animation:elephantBob 0.45s ease-in-out infinite alternate;
 }
 @keyframes elephantBob{
@@ -233,31 +233,22 @@ body.single-mode .slide.active .photo-main{
   transform-origin:0% 50%;
   animation:tailWag 0.9s ease-in-out infinite alternate;
 }
-@keyframes tailWag{
-  0%  {transform:rotate(-10deg);}
-  100%{transform:rotate(10deg);}
-}
+@keyframes tailWag{0%{transform:rotate(-10deg);}100%{transform:rotate(10deg);}}
 /* trunk sway */
 .e-trunk{
   transform-origin:50% 0%;
   animation:trunkSway 1.4s ease-in-out infinite alternate;
 }
-@keyframes trunkSway{
-  0%  {transform:rotate(-8deg);}
-  100%{transform:rotate(8deg);}
-}
+@keyframes trunkSway{0%{transform:rotate(-8deg);}100%{transform:rotate(8deg);}}
 /* ear flap */
 .e-ear{
   transform-origin:80% 30%;
   animation:earFlap 1.1s ease-in-out infinite alternate;
 }
-@keyframes earFlap{
-  0%  {transform:rotate(0deg);}
-  100%{transform:rotate(6deg);}
-}
+@keyframes earFlap{0%{transform:rotate(0deg);}100%{transform:rotate(6deg);}}
 /* legs alternate */
-.e-leg-fl,.e-leg-rl{animation:legFwd 0.45s ease-in-out infinite alternate;}
-.e-leg-fr,.e-leg-rr{animation:legBwd 0.45s ease-in-out infinite alternate;}
+.e-leg-fl,.e-leg-rl{transform-box:fill-box;transform-origin:50% 0%;animation:legFwd 0.45s ease-in-out infinite alternate;}
+.e-leg-fr,.e-leg-rr{transform-box:fill-box;transform-origin:50% 0%;animation:legBwd 0.45s ease-in-out infinite alternate;}
 @keyframes legFwd{0%{transform:rotate(-12deg);}100%{transform:rotate(12deg);}}
 @keyframes legBwd{0%{transform:rotate(12deg);}100%{transform:rotate(-12deg);}}
 
@@ -293,6 +284,75 @@ body.no-birthday .bday-banner{display:none!important;}
 #installBanner{display:none;position:fixed;bottom:clamp(56px,12vw,64px);left:50%;transform:translateX(-50%);z-index:50;background:var(--surface);border:1px solid rgba(255,107,138,0.25);border-radius:14px;padding:10px 18px;font-size:0.82rem;color:var(--muted);gap:12px;align-items:center;backdrop-filter:blur(12px);white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.5);max-width:90vw;}
 #installBanner.show{display:flex;}
 #installBanner button{background:linear-gradient(135deg,var(--rose),var(--peach));color:#fff;border:none;border-radius:8px;padding:6px 14px;font-weight:700;cursor:pointer;font-size:0.78rem;}
+/* ── MUSIC UPLOAD ── */
+.music-row{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(255,255,255,0.04);border-radius:12px;padding:10px 14px;}
+.music-label{font-size:clamp(0.75rem,2.8vw,0.82rem);color:var(--text);display:flex;align-items:center;gap:6px;flex:1;min-width:0;}
+.music-name{font-size:0.7rem;color:var(--mint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:120px;}
+.music-btns{display:flex;gap:6px;flex-shrink:0;}
+.music-pick{background:linear-gradient(135deg,var(--lavender),var(--mint));color:#1a1030;font-size:0.72rem;font-weight:700;padding:5px 12px;border:none;border-radius:8px;cursor:pointer;}
+.music-clear{background:rgba(255,255,255,0.08);color:var(--muted);font-size:0.72rem;padding:5px 10px;border:none;border-radius:8px;cursor:pointer;}
+
+/* ── REORDER PANEL ── */
+#reorderPanel{display:none;width:100%;max-width:440px;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:16px 18px;margin-top:12px;animation:fadeUp 0.4s cubic-bezier(0.16,1,0.3,1) both;}
+#reorderPanel.show{display:block;}
+.reorder-title{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-bottom:12px;}
+#reorderList{display:flex;flex-direction:column;gap:6px;max-height:240px;overflow-y:auto;}
+.reorder-item{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;padding:8px 12px;cursor:grab;transition:background 0.2s;user-select:none;}
+.reorder-item:active{cursor:grabbing;}
+.reorder-item.drag-over{background:rgba(255,107,138,0.15);border-color:rgba(255,107,138,0.4);}
+.reorder-thumb{width:36px;height:36px;border-radius:7px;object-fit:cover;flex-shrink:0;}
+.reorder-info{flex:1;min-width:0;}
+.reorder-month{font-size:0.72rem;color:var(--rose);font-weight:700;}
+.reorder-name{font-size:0.68rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.reorder-handle{color:rgba(255,255,255,0.2);font-size:1rem;}
+
+/* ── EXPORT PANEL ── */
+#exportBtn{position:fixed;bottom:clamp(46px,10vw,52px);left:16px;z-index:20;background:rgba(13,10,26,0.7);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.45);font-size:0.75rem;padding:8px 14px;border-radius:20px;cursor:pointer;backdrop-filter:blur(8px);transition:all 0.2s;display:none;}
+#exportBtn:hover{color:#fff;border-color:rgba(126,234,202,0.5);}
+#exportModal{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);align-items:center;justify-content:center;}
+#exportModal.show{display:flex;}
+.export-box{background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:32px;max-width:360px;width:90%;text-align:center;}
+.export-box h3{font-family:var(--font-brand);font-size:1.4rem;margin-bottom:8px;background:linear-gradient(135deg,var(--mint),var(--lavender));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.export-box p{color:var(--muted);font-size:0.82rem;margin-bottom:22px;line-height:1.6;}
+.export-btns{display:flex;flex-direction:column;gap:10px;}
+.export-opt{display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all 0.2s;text-align:left;}
+.export-opt:hover{border-color:rgba(126,234,202,0.4);background:rgba(126,234,202,0.06);}
+.export-opt-icon{font-size:1.5rem;}
+.export-opt-info strong{display:block;font-size:0.88rem;color:var(--text);}
+.export-opt-info span{font-size:0.72rem;color:var(--muted);}
+.export-close{margin-top:16px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:0.8rem;}
+.export-progress{margin-top:16px;display:none;}
+.export-progress p{color:var(--mint);font-size:0.82rem;margin-bottom:8px;}
+.export-bar-wrap{height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;}
+.export-bar-fill{height:100%;background:linear-gradient(90deg,var(--mint),var(--lavender));width:0%;transition:width 0.3s;border-radius:2px;}
+
+.bmc-btn{display:inline-flex;align-items:center;gap:7px;margin-top:10px;padding:8px 18px;background:#FFDD00;color:#000;font-family:var(--font-body);font-size:0.82rem;font-weight:700;border-radius:50px;text-decoration:none;transition:transform 0.2s,box-shadow 0.2s;box-shadow:0 4px 14px rgba(255,221,0,0.3);animation:fadeUp 0.8s 0.4s cubic-bezier(0.16,1,0.3,1) both;}
+.bmc-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(255,221,0,0.45);}
+@media(max-width:480px){
+  #landing{padding:14px;justify-content:flex-start;padding-top:24px;}
+  .brand-lockup{margin-bottom:16px;}
+  .brand-icon{width:52px;height:52px;font-size:1.5rem;}
+  .dropzone-card{padding:20px 16px;}
+  .dz-icon{font-size:1.8rem;margin-bottom:6px;}
+  .settings-panel{padding:14px 12px;margin-top:10px;}
+  .settings-grid{gap:8px;}
+  .toggle-row{padding:8px 10px;}
+  .mode-btn{font-size:0.7rem;padding:8px 4px;}
+  .music-row{flex-wrap:wrap;gap:6px;}
+  .music-label{min-width:100%;}
+  #reorderPanel{padding:12px 14px;}
+  .reorder-item{padding:6px 10px;}
+  .reorder-thumb{width:30px;height:30px;}
+  .month-strip{display:none;}
+  .made-with-love,.privacy-note{font-size:0.68rem;}
+  #reorderList{max-height:180px;}
+}
+@media(max-width:360px){
+  .brand-name{font-size:2rem;}
+  .settings-grid{grid-template-columns:1fr;}
+  .mode-row{flex-direction:column;}
+  .mode-btn{width:100%;}
+}
 </style>
 </head>
 <body>
@@ -303,68 +363,103 @@ body.no-birthday .bday-banner{display:none!important;}
   <div class="brand-lockup">
     <div class="brand-icon">🎞️</div>
     <div class="brand-name">BabyReel</div>
-    <div class="brand-tagline">Your baby's first year, beautifully told</div>
+    <div class="brand-tagline">Das erste Jahr deines Babys – wunderschön erzählt</div>
   </div>
 
   <div class="dropzone-card" id="dropBox">
     <span class="dz-icon">📁</span>
-    <div class="dz-heading">Drop your monthly photos</div>
-    <div class="dz-sub">One photo per month in order — captions appear automatically</div>
+    <div class="dz-heading">Fotos hier ablegen</div>
+    <div class="dz-sub" id="dzSub">Ein Foto pro Monat in der richtigen Reihenfolge – Beschriftungen erscheinen automatisch</div>
     <input type="file" id="fileInput" multiple accept="image/*" style="display:none">
-    <button class="dz-btn" onclick="document.getElementById('fileInput').click()">📷 Choose Photos</button>
+    <input type="file" id="musicInput" accept="audio/*" style="display:none">
+    <button class="dz-btn" onclick="document.getElementById('fileInput').click()">📷 Fotos auswählen</button>
+  </div>
+
+  <!-- REORDER PANEL -->
+  <div id="reorderPanel">
+    <div class="reorder-title">↕ Reihenfolge anpassen (ziehen)</div>
+    <div id="reorderList"></div>
+    <button class="dz-btn" id="startBtn" onclick="startSlideshow()" style="display:none;margin-top:14px;width:100%">▶ Diashow starten</button>
   </div>
 
   <!-- SETTINGS -->
   <div class="settings-panel">
-    <div class="settings-title">⚙️ Slideshow Options</div>
+    <div class="settings-title">⚙️ Optionen</div>
     <div class="settings-grid">
-
-      <!-- Photo mode -->
       <div class="mode-row">
-        <button class="mode-btn active" id="modeMulti" onclick="setMode('multi')">🖼️ Monthly (1–13)</button>
-        <button class="mode-btn" id="modeSingle" onclick="setMode('single')">📸 Single Photo</button>
+        <button class="mode-btn active" id="modeMulti" onclick="setMode('multi')">🖼️ Monatlich (1–13)</button>
+        <button class="mode-btn" id="modeSingle" onclick="setMode('single')">📸 Einzelbild</button>
       </div>
-
-      <!-- Toggles -->
       <div class="toggle-row">
-        <span class="toggle-label">🏷️ Captions</span>
+        <span class="toggle-label">🏷️ Beschriftungen</span>
         <label class="toggle"><input type="checkbox" id="togCaptions" checked onchange="applySettings()"><span class="toggle-track"></span></label>
       </div>
       <div class="toggle-row">
-        <span class="toggle-label">🎂 Birthday Banner</span>
+        <span class="toggle-label">🎂 Geburtstags-Banner</span>
         <label class="toggle"><input type="checkbox" id="togBirthday" checked onchange="applySettings()"><span class="toggle-track"></span></label>
       </div>
       <div class="toggle-row">
-        <span class="toggle-label">🎊 Confetti</span>
+        <span class="toggle-label">🎊 Konfetti</span>
         <label class="toggle"><input type="checkbox" id="togConfetti" checked onchange="applySettings()"><span class="toggle-track"></span></label>
       </div>
       <div class="toggle-row">
-        <span class="toggle-label">🎈 Balloons</span>
+        <span class="toggle-label">🎈 Luftballons</span>
         <label class="toggle"><input type="checkbox" id="togBalloons" checked onchange="applySettings()"><span class="toggle-track"></span></label>
       </div>
-
+      <!-- Music -->
+      <div class="music-row">
+        <span class="music-label">🎵 Musik <span class="music-name" id="musicName">Kein Titel</span></span>
+        <div class="music-btns">
+          <button class="music-pick" onclick="document.getElementById('musicInput').click()">Wählen</button>
+          <button class="music-clear" id="musicClearBtn" onclick="clearMusic()" style="display:none">✕</button>
+        </div>
+      </div>
     </div>
   </div>
 
   <div class="month-strip">
-    <span class="mpill">Newborn</span><span class="mpill">1 Month</span>
-    <span class="mpill">2 Months</span><span class="mpill">3 Months</span>
-    <span class="mpill">4 Months</span><span class="mpill">5 Months</span>
-    <span class="mpill">6 Months</span><span class="mpill">7 Months</span>
-    <span class="mpill">8 Months</span><span class="mpill">9 Months</span>
-    <span class="mpill">10 Months</span><span class="mpill">11 Months</span>
-    <span class="mpill">12 Months 🎂</span>
+    <span class="mpill">Neugeboren</span><span class="mpill">1 Monat</span>
+    <span class="mpill">2 Monate</span><span class="mpill">3 Monate</span>
+    <span class="mpill">4 Monate</span><span class="mpill">5 Monate</span>
+    <span class="mpill">6 Monate</span><span class="mpill">7 Monate</span>
+    <span class="mpill">8 Monate</span><span class="mpill">9 Monate</span>
+    <span class="mpill">10 Monate</span><span class="mpill">11 Monate</span>
+    <span class="mpill">12 Monate 🎂</span>
   </div>
-  <div class="privacy-note">🔒 Photos never leave your device</div>
-  <div class="made-with-love">Made with <span class="heart">♥</span> by Jayakumar &amp; AI, at home</div>
+  <div class="privacy-note">🔒 Fotos verlassen niemals dein Gerät · <a href="privacy.html" style="color:rgba(255,255,255,0.35);text-decoration:underline;">Datenschutz</a></div>
+  <div class="made-with-love">Gemacht mit <span class="heart">♥</span> von Jayakumar &amp; AI, zu Hause</div>
+  <a href="https://buymeacoffee.com/jykumarm" target="_blank" rel="noopener" class="bmc-btn">☕ Buy me a coffee</a>
 </div>
 
 <!-- LOADING -->
 <div id="loadingScreen">
   <div class="loading-brand">BabyReel</div>
   <div class="loading-dots"><div class="ldot"></div><div class="ldot"></div><div class="ldot"></div></div>
-  <div class="loading-msg" id="loadingMsg">Loading your memories...</div>
+  <div class="loading-msg" id="loadingMsg">Erinnerungen werden geladen...</div>
   <div class="progress-wrap"><div class="progress-fill" id="progFill"></div></div>
+</div>
+
+<!-- EXPORT MODAL -->
+<div id="exportModal">
+  <div class="export-box">
+    <h3>💾 Exportieren</h3>
+    <p>Die Aufnahme erfolgt vollständig lokal in deinem Browser. Nichts wird hochgeladen.</p>
+    <div class="export-btns">
+      <div class="export-opt" onclick="startExport('mp4')">
+        <div class="export-opt-icon">🎬</div>
+        <div class="export-opt-info"><strong>Als MP4 speichern</strong><span>Diashow als Video aufnehmen (WebM/MP4)</span></div>
+      </div>
+      <div class="export-opt" onclick="startExport('gif')">
+        <div class="export-opt-icon">🎞️</div>
+        <div class="export-opt-info"><strong>Als GIF speichern</strong><span>Animiertes GIF (niedrige Auflösung)</span></div>
+      </div>
+    </div>
+    <div class="export-progress" id="exportProgress">
+      <p id="exportProgressMsg">Wird aufgezeichnet...</p>
+      <div class="export-bar-wrap"><div class="export-bar-fill" id="exportBarFill"></div></div>
+    </div>
+    <button class="export-close" onclick="closeExport()">Schließen</button>
+  </div>
 </div>
 
 <div class="confetti-wrap" id="confetti"></div>
@@ -376,24 +471,25 @@ body.no-birthday .bday-banner{display:none!important;}
 <div class="counter"   id="counter"  style="display:none"></div>
 <div class="dots-row"  id="dots"     style="display:none"></div>
 <button class="pause-btn" id="pauseBtn" onclick="togglePause()" style="display:none">⏸ Pause</button>
+<button id="exportBtn" onclick="document.getElementById('exportModal').classList.add('show')">💾 Export</button>
 <div class="swipe-hint" id="swipeHint" style="display:none">← swipe to navigate →</div>
 <div id="installBanner">📲 Install BabyReel <button onclick="installApp()">Install</button> <span onclick="this.parentElement.classList.remove('show')" style="cursor:pointer;margin-left:4px;opacity:0.4">✕</span></div>
 
 <script>
 const CAPTIONS = [
-  { month:"Newborn",   title:"Hello, World!",       sub:"The most beautiful surprise we ever received" },
-  { month:"1 Month",   title:"One Month Old",        sub:"Already changing our whole world" },
-  { month:"2 Months",  title:"Growing So Fast",      sub:"Every day brings something new to love" },
-  { month:"3 Months",  title:"First Real Smiles",    sub:"That grin could light up any room" },
-  { month:"4 Months",  title:"Eyes Wide Open",       sub:"Curious about everything and everyone" },
-  { month:"5 Months",  title:"Little Explorer",      sub:"Reaching, grabbing, discovering the world" },
-  { month:"6 Months",  title:"Halfway There 🎉",     sub:"Six whole months of pure joy and wonder" },
-  { month:"7 Months",  title:"On the Move",          sub:"Nothing can slow this little one down" },
-  { month:"8 Months",  title:"Full of Mischief",     sub:"The laughs are getting louder every day" },
-  { month:"9 Months",  title:"Almost Walking!",      sub:"Wobbly legs and the biggest determination" },
-  { month:"10 Months", title:"So Much Personality",  sub:"Making everyone fall in love, one smile at a time" },
-  { month:"11 Months", title:"Nearly One Year",      sub:"How did a whole year go by so fast?" },
-  { month:"12 Months", title:"Happy 1st Birthday!",  sub:"One year down, a lifetime of adventures ahead" },
+  { month:"Neugeboren",  title:"Hallo, Welt!",           sub:"Die schönste Überraschung, die wir je erlebt haben" },
+  { month:"1 Monat",     title:"Erst einen Monat alt",   sub:"Und hat unsere Welt schon komplett verändert" },
+  { month:"2 Monate",    title:"So schnell groß",        sub:"Jeden Tag gibt es etwas Neues zu entdecken" },
+  { month:"3 Monate",    title:"Erstes echtes Lächeln",  sub:"Dieses Strahlen erhellt jeden Raum" },
+  { month:"4 Monate",    title:"Große Augen, große Welt",sub:"Neugierig auf alles und jeden" },
+  { month:"5 Monate",    title:"Kleiner Entdecker",      sub:"Greifen, staunen, die Welt begreifen" },
+  { month:"6 Monate",    title:"Halbzeit 🎉",            sub:"Sechs Monate pure Freude und Staunen" },
+  { month:"7 Monate",    title:"Immer in Bewegung",      sub:"Nichts kann dieses kleine Wunder aufhalten" },
+  { month:"8 Monate",    title:"Voller Entdeckergeist",  sub:"Das Lachen wird jeden Tag lauter" },
+  { month:"9 Monate",    title:"Fast am Laufen!",        sub:"Wacklige Beine, riesige Entschlossenheit" },
+  { month:"10 Monate",   title:"So viel Persönlichkeit", sub:"Bringt alle zum Lächeln – mit einem einzigen Blick" },
+  { month:"11 Monate",   title:"Fast ein Jahr!",         sub:"Wie konnte ein ganzes Jahr so schnell vergehen?" },
+  { month:"12 Monate",   title:"Alles Gute zum 1. Geburtstag!", sub:"Ein Jahr geschafft – ein Leben voller Abenteuer wartet" },
 ];
 
 const DURATION=6000;
@@ -406,16 +502,70 @@ function setMode(m){
   document.getElementById('modeMulti').classList.toggle('active', m==='multi');
   document.getElementById('modeSingle').classList.toggle('active', m==='single');
   document.getElementById('fileInput').multiple = (m==='multi');
-  const sub = document.querySelector('.dz-sub');
-  sub.textContent = m==='multi'
-    ? 'One photo per month in order — captions appear automatically'
-    : 'Pick a single photo to display full-screen on the big screen';
-  // Auto-configure toggles for each mode
+  document.getElementById('dzSub').textContent = m==='multi'
+    ? 'Ein Foto pro Monat in der richtigen Reihenfolge – Beschriftungen erscheinen automatisch'
+    : 'Ein einzelnes Foto für die Großbildanzeige auswählen';
   const isSingle = m==='single';
   document.getElementById('togCaptions').checked  = !isSingle;
   document.getElementById('togBirthday').checked  = !isSingle;
   document.getElementById('togBalloons').checked  = !isSingle;
-  // confetti stays on in both modes
+}
+
+// ── Music ──
+let musicAudio = null, musicURL = null;
+document.getElementById('musicInput').addEventListener('change', e=>{
+  const f = e.target.files[0]; if(!f) return;
+  if(musicURL) URL.revokeObjectURL(musicURL);
+  musicURL = URL.createObjectURL(f);
+  document.getElementById('musicName').textContent = f.name.replace(/\.[^.]+$/,'');
+  document.getElementById('musicClearBtn').style.display = '';
+});
+function clearMusic(){
+  if(musicURL) URL.revokeObjectURL(musicURL);
+  musicURL = null;
+  document.getElementById('musicName').textContent = 'Kein Titel';
+  document.getElementById('musicClearBtn').style.display = 'none';
+  document.getElementById('musicInput').value = '';
+  if(musicAudio){ musicAudio.pause(); musicAudio=null; }
+}
+function startMusic(){
+  if(!musicURL) return;
+  musicAudio = new Audio(musicURL);
+  musicAudio.loop = true; musicAudio.volume = 0.55;
+  musicAudio.play().catch(()=>{});
+}
+function stopMusic(){
+  if(musicAudio){ musicAudio.pause(); musicAudio=null; }
+}
+
+// ── Drag-to-reorder ──
+let photoFiles = [], dragSrcIdx = null;
+function buildReorderList(files){
+  const list = document.getElementById('reorderList');
+  list.innerHTML = '';
+  files.forEach((f,i)=>{
+    const url = URL.createObjectURL(f);
+    const item = document.createElement('div');
+    item.className = 'reorder-item';
+    item.draggable = true;
+    item.dataset.idx = i;
+    const offset = 13 - files.length;
+    const cap = CAPTIONS[Math.max(0, offset+i)] || CAPTIONS[12];
+    item.innerHTML = `<span class="reorder-handle">⠿</span><img class="reorder-thumb" src="${url}"><div class="reorder-info"><div class="reorder-month">${cap.month}</div><div class="reorder-name">${f.name}</div></div>`;
+    item.addEventListener('dragstart', e=>{ dragSrcIdx=i; e.dataTransfer.effectAllowed='move'; });
+    item.addEventListener('dragover',  e=>{ e.preventDefault(); item.classList.add('drag-over'); });
+    item.addEventListener('dragleave', ()=> item.classList.remove('drag-over'));
+    item.addEventListener('drop', e=>{
+      e.preventDefault(); item.classList.remove('drag-over');
+      if(dragSrcIdx===null||dragSrcIdx===i) return;
+      const arr = [...photoFiles];
+      const [moved] = arr.splice(dragSrcIdx,1); arr.splice(i,0,moved);
+      photoFiles = arr;
+      buildReorderList(photoFiles);
+    });
+    list.appendChild(item);
+  });
+  document.getElementById('reorderPanel').classList.add('show');
 }
 
 function applySettings(){
@@ -428,6 +578,15 @@ function applySettings(){
   document.getElementById('confetti').style.display = confetti ? '' : 'none';
   document.getElementById('balloons').style.display = balloons ? '' : 'none';
 }
+
+// ── RELOAD WARNING ──
+window.addEventListener('beforeunload', e => {
+  if(photos.length > 0 || photoFiles.length > 0){
+    e.preventDefault();
+    e.returnValue = 'Deine Fotos gehen verloren wenn du die Seite verlässt. Wirklich fortfahren?';
+    return e.returnValue;
+  }
+});
 
 // PWA
 window.addEventListener('beforeinstallprompt', e=>{e.preventDefault();deferredInstall=e;document.getElementById('installBanner').classList.add('show');});
@@ -470,19 +629,43 @@ function readDir(dir,files,done){
 }
 function isImg(f){return f.type.startsWith('image/')||/\.(heic|heif|jpg|jpeg|png|webp)$/i.test(f.name);}
 dropBox.addEventListener('click',e=>{if(e.target.tagName!=='BUTTON')document.getElementById('fileInput').click();});
-document.getElementById('fileInput').addEventListener('change',e=>loadPhotos(Array.from(e.target.files).filter(isImg)));
+document.getElementById('fileInput').addEventListener('change',e=>{
+  const newFiles=Array.from(e.target.files).filter(isImg);
+  if(!newFiles.length) return;
+  if(mode==='single'){ photoFiles=[newFiles[0]]; startSlideshow(); return; }
+  // Merge with existing, avoid duplicates by name, cap at 13
+  const existing = new Set(photoFiles.map(f=>f.name));
+  const merged = [...photoFiles, ...newFiles.filter(f=>!existing.has(f.name))];
+  merged.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
+  photoFiles = merged.slice(0,13);
+  buildReorderList(photoFiles);
+  document.getElementById('startBtn').style.display='';
+  // reset input so same files can be re-added if cleared
+  e.target.value='';
+});
 
 function loadPhotos(files){
-  if(!files.length)return alert('No images found!');
+  if(!files.length)return alert('Keine Bilder gefunden!');
   if(mode==='single'){
-    files=[files[0]]; // only first
+    photoFiles=[files[0]];
+    startSlideshow();
   } else {
     files.sort((a,b)=>a.name.localeCompare(b.name,undefined,{numeric:true}));
     if(files.length>13)files=files.slice(0,13);
+    photoFiles = Array.from(files);
+    buildReorderList(photoFiles);
+    // Show start button
+    const btn = document.getElementById('startBtn');
+    if(btn) btn.style.display='';
   }
+}
+
+function startSlideshow(){
+  const files = photoFiles;
+  if(!files.length) return;
   document.getElementById('landing').classList.add('hidden');
   document.getElementById('loadingScreen').classList.add('show');
-  applySettings(); // apply before building
+  applySettings();
   const fill=document.getElementById('progFill'),msg=document.getElementById('loadingMsg');
   photos=new Array(files.length);let loaded=0;
   files.forEach((file,i)=>{
@@ -490,7 +673,7 @@ function loadPhotos(files){
     r.onload=e=>{
       photos[i]=e.target.result;loaded++;
       fill.style.width=(loaded/files.length*100)+'%';
-      msg.textContent=`Loading memory ${loaded} of ${files.length}...`;
+      msg.textContent=`Erinnerung ${loaded} von ${files.length} wird geladen...`;
       if(loaded===files.length)setTimeout(buildShow,400);
     };
     r.readAsDataURL(file);
@@ -516,7 +699,7 @@ function buildShow(){
         <div class="photo-bg" style="background-image:url('${src}')"></div>
         <img class="photo-main" src="${src}" alt=""${imgStyle}/>
         ${isLast?'<div class="bday-banner" id="bdayBanner"><div class="bday-text">🎂 Happy 1st Birthday! 🎈</div></div>':''}
-        ${mode==='single'?'<div class="vignette"></div><div class="elephant-wrap" id="elephantWrap"><svg viewBox="-15 0 105 70" xmlns="http://www.w3.org/2000/svg" width="105" height="70"><ellipse cx="45" cy="67" rx="28" ry="4" fill="rgba(0,0,0,0.18)"/><path class="e-tail" d="M72 34 Q80 30 78 22 Q76 16 80 12" stroke="#9E9DB5" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="45" cy="38" rx="26" ry="20" fill="#B8B5D0"/><circle cx="20" cy="30" r="16" fill="#C4C1DC"/><ellipse class="e-ear" cx="24" cy="26" rx="10" ry="12" fill="#A09DC0"/><circle cx="14" cy="26" r="2.5" fill="#2a1a3a"/><circle cx="13.2" cy="25.2" r="0.8" fill="white"/><path class="e-trunk" d="M10 34 Q4 42 6 50 Q8 56 14 54" stroke="#C4C1DC" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M12 38 Q7 40 9 44" stroke="#EDE8FF" stroke-width="2" fill="none" stroke-linecap="round"/><rect class="e-leg-fl" x="24" y="52" width="9" height="16" rx="4" fill="#A09DC0" transform-origin="28 52"/><rect class="e-leg-fr" x="34" y="52" width="9" height="16" rx="4" fill="#B8B5D0" transform-origin="38 52"/><rect class="e-leg-rl" x="52" y="52" width="9" height="16" rx="4" fill="#A09DC0" transform-origin="56 52"/><rect class="e-leg-rr" x="62" y="52" width="9" height="16" rx="4" fill="#B8B5D0" transform-origin="66 52"/><text x="50" y="22" font-size="10" opacity="0.75">✨</text></svg><div class="elephant-msg">🎉 Thank you for joining us!</div></div>':''}
+        ${mode==='single'?`<div class="vignette"></div><div class="elephant-wrap" id="elephantWrap"><div class="trike-wrap"><svg viewBox="-15 0 105 70" xmlns="http://www.w3.org/2000/svg" width="105" height="70"><ellipse cx="45" cy="67" rx="28" ry="4" fill="rgba(0,0,0,0.18)"/><path class="e-tail" d="M72 34 Q80 30 78 22 Q76 16 80 12" stroke="#9E9DB5" stroke-width="2.5" fill="none" stroke-linecap="round"/><ellipse cx="45" cy="38" rx="26" ry="20" fill="#B8B5D0"/><circle cx="20" cy="30" r="16" fill="#C4C1DC"/><ellipse class="e-ear" cx="24" cy="26" rx="10" ry="12" fill="#A09DC0"/><circle cx="14" cy="26" r="2.5" fill="#2a1a3a"/><circle cx="13.2" cy="25.2" r="0.8" fill="white"/><path class="e-trunk" d="M10 34 Q4 42 6 50 Q8 56 14 54" stroke="#C4C1DC" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M12 38 Q7 40 9 44" stroke="#EDE8FF" stroke-width="2" fill="none" stroke-linecap="round"/><rect class="e-leg-fl" x="24" y="52" width="9" height="16" rx="4" fill="#A09DC0"/><rect class="e-leg-fr" x="34" y="52" width="9" height="16" rx="4" fill="#B8B5D0"/><rect class="e-leg-rl" x="52" y="52" width="9" height="16" rx="4" fill="#A09DC0"/><rect class="e-leg-rr" x="62" y="52" width="9" height="16" rx="4" fill="#B8B5D0"/><text x="50" y="22" font-size="10" opacity="0.75">✨</text></svg></div><div class="elephant-msg">🎉 Danke, dass ihr dabei seid!</div></div>`:''}
         <div class="caption-wrap">
           <div class="cap-pill">✦ ${cap.month}</div>
           <div class="cap-title">${cap.title}</div>
@@ -588,6 +771,8 @@ function buildShow(){
   if('ontouchstart' in window && mode!=='single'){document.getElementById('swipeHint').style.display='flex';}
 
   current=0;updateUI();if(mode!=='single')startTimer();requestWakeLock();
+  startMusic();
+  if(mode!=='single') document.getElementById('exportBtn').style.display='';
 
   // Auto-fullscreen for single photo mode
   if(mode==='single'){
@@ -658,7 +843,99 @@ document.addEventListener('touchend',e=>{
   tx=null;
 },{passive:true});
 
-// ── SCREEN WAKE LOCK — prevent sleep during slideshow ──
+// ── EXPORT ──
+function closeExport(){
+  document.getElementById('exportModal').classList.remove('show');
+  document.getElementById('exportProgress').style.display='none';
+  document.getElementById('exportBarFill').style.width='0%';
+}
+
+function startExport(type){
+  const showEl=document.getElementById('show');
+  if(!showEl||!photos.length){alert('Diashow zuerst starten!');return;}
+  const prog=document.getElementById('exportProgress');
+  const msg=document.getElementById('exportProgressMsg');
+  const bar=document.getElementById('exportBarFill');
+  prog.style.display='block';
+  document.querySelector('.export-btns').style.display='none';
+
+  if(type==='mp4'){
+    msg.textContent='Aufnahme läuft... Bitte warten.';
+    const stream=showEl.closest('body')?document.documentElement:showEl;
+    try{
+      const canvas=document.createElement('canvas');
+      canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+      const ctx=canvas.getContext('2d');
+      const totalDuration=photos.length*DURATION;
+      const fps=10, totalFrames=Math.ceil(totalDuration/1000*fps);
+      let frame=0;
+      // Use MediaRecorder on a canvas stream
+      const canvasStream=canvas.captureStream(fps);
+      const recorder=new MediaRecorder(canvasStream,{mimeType:'video/webm;codecs=vp9',videoBitsPerSecond:2500000});
+      const chunks=[];
+      recorder.ondataavailable=e=>chunks.push(e.data);
+      recorder.onstop=()=>{
+        const blob=new Blob(chunks,{type:'video/webm'});
+        const url=URL.createObjectURL(blob);
+        const a=document.createElement('a'); a.href=url; a.download='babyreel.webm'; a.click();
+        URL.revokeObjectURL(url);
+        document.querySelector('.export-btns').style.display='';
+        closeExport();
+      };
+      recorder.start();
+      // draw each slide onto canvas
+      let slideIdx=0;
+      function drawFrame(){
+        if(frame>=totalFrames){recorder.stop();return;}
+        slideIdx=Math.min(Math.floor(frame/fps/(DURATION/1000)),photos.length-1);
+        const img=new Image(); img.src=photos[slideIdx];
+        img.onload=()=>{
+          ctx.fillStyle='#0d0a1a'; ctx.fillRect(0,0,canvas.width,canvas.height);
+          const scale=Math.min(canvas.width/img.width,canvas.height/img.height);
+          const w=img.width*scale, h=img.height*scale;
+          ctx.drawImage(img,(canvas.width-w)/2,(canvas.height-h)/2,w,h);
+          frame++;
+          bar.style.width=(frame/totalFrames*100)+'%';
+          msg.textContent=`Bild ${slideIdx+1} von ${photos.length} wird gerendert...`;
+          setTimeout(drawFrame,1000/fps);
+        };
+        img.onerror=()=>{frame++;setTimeout(drawFrame,1000/fps);};
+      }
+      drawFrame();
+    }catch(e){
+      msg.textContent='Export fehlgeschlagen: '+e.message;
+    }
+  } else {
+    // GIF — simple frame-by-frame using canvas
+    msg.textContent='GIF wird erstellt... Dies kann einen Moment dauern.';
+    import('https://cdnjs.cloudflare.com/ajax/libs/gif.js/0.2.0/gif.js').then(()=>{
+      msg.textContent='GIF-Bibliothek nicht verfügbar. Bitte MP4 verwenden.';
+      document.querySelector('.export-btns').style.display='';
+    }).catch(()=>{
+      // Fallback: just download first frame as PNG
+      const canvas=document.createElement('canvas');
+      canvas.width=800;canvas.height=600;
+      const ctx=canvas.getContext('2d');
+      const img=new Image(); img.src=photos[0];
+      img.onload=()=>{
+        ctx.fillStyle='#0d0a1a';ctx.fillRect(0,0,800,600);
+        const sc=Math.min(800/img.width,600/img.height);
+        ctx.drawImage(img,(800-img.width*sc)/2,(600-img.height*sc)/2,img.width*sc,img.height*sc);
+        canvas.toBlob(blob=>{
+          const url=URL.createObjectURL(blob);
+          const a=document.createElement('a');a.href=url;a.download='babyreel-preview.png';a.click();
+          URL.revokeObjectURL(url);
+          document.querySelector('.export-btns').style.display='';
+          closeExport();
+        },'image/png');
+      };
+      msg.textContent='Vorschaubild wird gespeichert...';
+      bar.style.width='100%';
+    });
+  }
+}
+
+// ── SCREEN WAKE LOCK ──
 // Method 1: Wake Lock API (Chrome/Android)
 // Method 2: Silent video loop fallback (iOS Safari + everywhere else)
 let wakeLock = null;
